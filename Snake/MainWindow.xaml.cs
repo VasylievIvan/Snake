@@ -12,34 +12,43 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Timers;
+using System.Windows.Threading;
 
 namespace Snake
 {
-
-   public class FButton : Button
+      
+   public class FHead : Button
     {
-        public int X;
-        public int Y;
+        public string dir = "up";
     }
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            
+
+            InitializeComponent();
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(200);
+            timer.Tick += timer_Tick;
+            timer.Start();
+
             InitializeComponent();
         }
 
-        private void Main_KeyDown(object sender, KeyEventArgs e)
+
+
+        void timer_Tick(object sender, EventArgs e)
         {
             foreach (var obj in grid.Children)
             {
-                if (obj is FButton)
+                if (obj is FHead)
                 {
-                    var btn = (FButton)obj;
+                    var btn = (FHead)obj;
                     int x = Grid.GetRow(btn);
                     int y = Grid.GetColumn(btn);
 
-                    if (e.Key == Key.Up)
+                    if (btn.dir == "up")
                     {
                         if (x == 0)
                             x = 19;
@@ -47,7 +56,7 @@ namespace Snake
                             x--;
                     }
 
-                    if (e.Key == Key.Down)
+                    if (btn.dir == "down")
                     {
                         if (x == 19)
                             x = 0;
@@ -55,7 +64,7 @@ namespace Snake
                             x++;
                     }
 
-                    if (e.Key == Key.Left)
+                    if (btn.dir == "left")
                     {
                         if (y == 0)
                             y = 19;
@@ -63,7 +72,7 @@ namespace Snake
                             y--;
                     }
 
-                    if (e.Key == Key.Right)
+                    if (btn.dir == "right")
                     {
                         if (y == 19)
                             y = 0;
@@ -75,8 +84,30 @@ namespace Snake
                     Grid.SetColumn(btn, y);
                 }
             }
+        }
 
-            
+        private void Main_KeyDown(object sender, KeyEventArgs e)
+        {
+            foreach (var obj in grid.Children)           
+                if (obj is FHead)
+                {
+                    var btn = (FHead)obj;
+
+                    if (e.Key == Key.Up)
+                        btn.dir = "up";
+
+                    if (e.Key == Key.Down)
+                            btn.dir = "down";                    
+
+                    if (e.Key == Key.Left)
+                        btn.dir = "left";
+
+
+                    if (e.Key == Key.Right)
+                        btn.dir = "right";
+
+                    
+                }            
         }
     }
 }

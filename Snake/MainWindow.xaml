@@ -56,7 +56,8 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <local:FButton Grid.Column="10" Grid.Row="10" Background="Black" HorizontalAlignment="Left" Width="24"/>
+            <local:FHead Grid.Column="10" Grid.Row="10" Background="Black" HorizontalAlignment="Left" Width="24"/>
+            
 
         </Grid>
     </DockPanel>
