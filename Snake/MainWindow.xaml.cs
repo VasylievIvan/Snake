@@ -31,6 +31,9 @@ namespace Snake
     public class FHead : FPart
     {
         public string dir = "up";
+        public bool haveChanged = false;    //флаг, показывающий менялась ли переменная текущем тике
+        public int x;
+        public int y;
     }
 
     public class FBody : FPart
@@ -48,24 +51,54 @@ namespace Snake
         }
     }
 
-    
+    public class FFood : Button
+    {
+        public int x;
+        public int y;
+
+        public FFood()
+        {
+
+        }
+
+        public FFood(int xpos, int ypos)
+        {
+            x = xpos;
+            y = ypos;        
+        }
+    }
+
+
     public partial class MainWindow : Window
     {
-        public FHead h1;
-        public Queue<FPart> q1 = new Queue<FPart>();
+        public FHead h1;                                        //голова
+        public List<FPart> q1 = new List<FPart>();            //массив из остальных частей
         public FPart last;
+        public FFood food;
+        Random random = new Random();
+        public DispatcherTimer timer = new DispatcherTimer();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(200);
+            
+            timer.Interval = TimeSpan.FromMilliseconds(100);      //задаём интервал
             timer.Tick += timer_Tick;
-            timer.Start();
+                                                    //включаем таймер
 
 
-            h1 = new FHead();
+
+            StartNewGame();
+
+
+
+
+        }
+
+        void StartNewGame()
+        {
+            h1 = new FHead();                                     //создаём голову
             h1.dir = "up";
             grid.Children.Add(h1);
             Grid.SetColumn(h1, 10);
@@ -74,21 +107,36 @@ namespace Snake
             last = h1;
 
 
+            AddPart();                                           //добавляем части тела
             AddPart();
             AddPart();
+
+
+            FoodEaten();
+            timer.Start();
+        }
+
+        void FoodEaten()
+        {
+            grid.Children.Remove(food);
             AddPart();
+            SpawnFood();
+        }
 
-
-
-
-
+        void SpawnFood()
+        {
+            food = new FFood(random.Next(0, 19), random.Next(0, 19));
+            food.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+            grid.Children.Add(food);
+            Grid.SetColumn(food, food.y);
+            Grid.SetRow(food, food.x);
         }
 
         void AddPart()
         {
             FBody b1 = new FBody(last);
             grid.Children.Add(b1);
-            q1.Enqueue(b1);
+            q1.Add(b1);
             last = b1;
         }
 
@@ -144,6 +192,12 @@ namespace Snake
 
             Grid.SetRow(h1, x);
             Grid.SetColumn(h1, y);
+            h1.haveChanged = false;
+
+            if(x == food.x && y == food.y)
+            {
+                FoodEaten();
+            }
 
 
             foreach (var obj in q1)
@@ -162,6 +216,16 @@ namespace Snake
                 Grid.SetRow(btn, btn.prnt.Xprev);
                 Grid.SetColumn(btn, btn.prnt.Yprev);
 
+                if(xp == x&&yp == y)
+                {
+                    MessageBox.Show("You lost!");
+                    grid.Children.Clear();
+                    q1.Clear();
+                    timer.Stop();
+                    StartNewGame();
+                    break; 
+                }
+
             }
         }
 
@@ -171,22 +235,33 @@ namespace Snake
 
             var btn = h1;
 
-            if (e.Key == Key.Up)
+            if (e.Key == Key.Up && btn.haveChanged == false)
                 if (btn.dir != "down")
+                {
                     btn.dir = "up";
+                    btn.haveChanged = true;
+                }
 
-            if (e.Key == Key.Down)
+            if (e.Key == Key.Down && btn.haveChanged == false)
                 if (btn.dir != "up")
+                {
                     btn.dir = "down";
+                    btn.haveChanged = true;
+                }
 
-            if (e.Key == Key.Left)
+            if (e.Key == Key.Left && btn.haveChanged == false)
                 if (btn.dir != "right")
+                {
                     btn.dir = "left";
+                    btn.haveChanged = true;
+                }
 
-
-            if (e.Key == Key.Right)
+            if (e.Key == Key.Right && btn.haveChanged == false)
                 if (btn.dir != "left")
+                {
                     btn.dir = "right";
+                    btn.haveChanged = true;
+                }
 
             if (e.Key == Key.A)
             {
