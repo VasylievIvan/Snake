@@ -134,7 +134,7 @@ namespace Snake
 
         void AddPart()
         {
-            FBody b1 = new FBody(last);
+            FBody b1 = new FBody(last);            
             grid.Children.Add(b1);
             q1.Add(b1);
             last = b1;

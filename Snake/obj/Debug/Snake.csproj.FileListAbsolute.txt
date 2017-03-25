@@ -11,3 +11,4 @@ C:\Users\Ruplix\Documents\GitHub\Snake\Snake\obj\Debug\Snake.Properties.Resource
 C:\Users\Ruplix\Documents\GitHub\Snake\Snake\obj\Debug\Snake.csproj.GenerateResource.Cache
 C:\Users\Ruplix\Documents\GitHub\Snake\Snake\obj\Debug\Snake.exe
 C:\Users\Ruplix\Documents\GitHub\Snake\Snake\obj\Debug\Snake.pdb
+C:\Users\Ruplix\Documents\GitHub\Snake\Snake\obj\Debug\Snake.csprojResolveAssemblyReference.cache

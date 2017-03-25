@@ -11,7 +11,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem x:Name="gameItem" Header="Пуск"/>
         </Menu>
-        <Grid x:Name="grid" ShowGridLines="True">
+        <Grid x:Name="grid" ShowGridLines="False">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
